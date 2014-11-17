@@ -1,0 +1,43 @@
+// Function creates the file 'weeklyStatusTemplate + date', populates it with 
+// a table (in this case, two tables), and e-mails it to a team. Allows team of users to Edit the file.
+
+function createDoc() {
+  var userTeam = [ "user@email.com
+                ];
+  var formattedDate = Utilities.formatDate(new Date(), "PST", "MM-dd-yyyy");
+  var doc = DocumentApp.create('weeklyStatusTemplate' + formattedDate);
+  var body = doc.getBody();
+  
+  // Table 0
+  var table0Data = [['Status Report', ''], 
+                  ['Category', 'Update'], ['Escalations', ''], 
+                  ['Last Week Accomplishments', ''], 
+                  ['Upcoming Week', '']];
+  table = body.appendTable(table0Data);
+  table.getRow(0).editAsText().setBold(true);               
+  table.getCell(0,0).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  table.getCell(0,1).setBackgroundColor("#000000");
+  table.getCell(1,0).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  table.getCell(1,1).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  
+  // Tables 1
+  var table1Data = [['Status Report', ''], 
+                  ['Category', 'Update'], ['Escalations', ''], 
+                  ['Last Week Accomplishments', ''], 
+                  ['Upcoming Week', '']];
+  table = body.appendTable(table1Data);
+  table.getCell(0,0).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  table.getCell(0,1).setBackgroundColor("#000000");
+  table.getCell(1,0).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  table.getCell(1,1).setBackgroundColor("#000000").editAsText().setForegroundColor("#FFFFFF");
+  table.getRow(0).editAsText().setBold(true);
+    
+  // Add Specified Users to List of Editors
+  doc.addEditors(userTeam);
+  
+  // Send an e-mail to groups.
+  var emailAddress = ["sendto@email.com", "sendto2@email.com"];
+  var subject = "Weekly Status Report for " + formattedDate;
+  var message = doc.getUrl();
+  MailApp.sendEmail(emailAddress, subject, message);
+}
